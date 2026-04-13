@@ -1,0 +1,1299 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sarngapani Bandaru — MuleSoft Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #050a12;
+      --bg2: #080f1c;
+      --panel: #0b1525;
+      --border: #1a2d4a;
+      --border2: #0f2035;
+      --accent: #00d4ff;
+      --accent2: #0088cc;
+      --accent3: #00ff88;
+      --accent4: #ff6b35;
+      --text: #e8f4ff;
+      --text2: #7a9bbf;
+      --text3: #4a6a8a;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Syne', sans-serif;
+      --glow: 0 0 20px rgba(0,212,255,0.3);
+      --glow2: 0 0 40px rgba(0,212,255,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform 0.1s, background 0.2s;
+      box-shadow: 0 0 15px var(--accent);
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(0,212,255,0.5);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: transform 0.15s ease, width 0.2s, height 0.2s;
+    }
+
+    /* Background Grid */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* Floating particles */
+    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .particle {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: float linear infinite;
+      opacity: 0;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.2; }
+      100% { transform: translateY(-10vh) translateX(var(--dx, 40px)); opacity: 0; }
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 20px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s;
+      background: transparent;
+    }
+    nav.scrolled {
+      background: rgba(5,10,18,0.95);
+      border-bottom-color: var(--border);
+      backdrop-filter: blur(20px);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+    .nav-logo span { color: var(--text3); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text2);
+      text-decoration: none;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px; background: var(--accent);
+      transform: scaleX(0); transition: transform 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex; align-items: center;
+      padding: 0 60px;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* Integration diagram in background */
+    .hero-diagram {
+      position: absolute; right: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 55%; height: 80%;
+      opacity: 0.12;
+    }
+    .hero-diagram svg { width: 100%; height: 100%; }
+
+    .hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      margin-bottom: 32px;
+      background: rgba(0,212,255,0.05);
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      background: var(--accent3);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(0,255,136,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(0,255,136,0); }
+    }
+
+    .hero-name {
+      font-family: var(--sans);
+      font-size: clamp(48px, 6vw, 88px);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero-name .first { color: var(--text); }
+    .hero-name .last {
+      color: var(--accent);
+      text-shadow: var(--glow);
+      display: block;
+    }
+
+    .hero-title {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--text2);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+    .hero-title span { color: var(--accent4); }
+
+    .hero-desc {
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--text2);
+      max-width: 540px;
+      margin-bottom: 48px;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-btns {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+    .btn {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 30px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      font-weight: 700;
+    }
+    .btn-primary:hover {
+      background: #fff;
+      box-shadow: 0 0 30px rgba(0,212,255,0.5);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .btn-outline:hover {
+      background: rgba(0,212,255,0.08);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex; gap: 48px; margin-top: 64px;
+      animation: fadeUp 0.8s 0.5s ease both;
+    }
+    .stat-item { }
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+    }
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SECTION BASE */
+    section { position: relative; z-index: 1; padding: 120px 60px; }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before {
+      content: ''; width: 40px; height: 1px; background: var(--accent);
+    }
+
+    .section-title {
+      font-family: var(--sans);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 64px;
+    }
+
+    /* PIPELINE / ABOUT */
+    #about { background: var(--bg2); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 16px;
+      line-height: 1.9;
+      color: var(--text2);
+      margin-bottom: 20px;
+    }
+    .about-text p strong { color: var(--text); }
+
+    /* API Flow Diagram */
+    .api-flow {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .api-flow-title {
+      color: var(--text3);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .api-flow-title::before { content: '//'; color: var(--accent3); }
+
+    .flow-node {
+      display: flex; align-items: center; gap: 0;
+      margin-bottom: 6px;
+    }
+    .flow-box {
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 11px;
+      white-space: nowrap;
+      position: relative;
+    }
+    .flow-box.source { background: rgba(255,107,53,0.15); border: 1px solid rgba(255,107,53,0.4); color: #ff6b35; }
+    .flow-box.experience { background: rgba(0,212,255,0.12); border: 1px solid rgba(0,212,255,0.4); color: #00d4ff; }
+    .flow-box.process { background: rgba(100,180,255,0.1); border: 1px solid rgba(100,180,255,0.3); color: #64b4ff; }
+    .flow-box.system { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); color: #00ff88; }
+    .flow-arrow {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), var(--accent), var(--border));
+      position: relative;
+      min-width: 20px;
+    }
+    .flow-arrow::after {
+      content: '';
+      position: absolute; right: -1px; top: -4px;
+      border: 4px solid transparent;
+      border-left-color: var(--accent);
+    }
+    .flow-pulse {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      left: 0;
+      animation: flowMove 2s linear infinite;
+      opacity: 0.8;
+    }
+    @keyframes flowMove {
+      0% { left: 0; opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { left: calc(100% - 8px); opacity: 0; }
+    }
+
+    .flow-layer-label {
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      margin-top: 20px;
+      padding-left: 4px;
+    }
+
+    /* SKILLS */
+    #skills { }
+
+    .skills-layout {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .skill-card {
+      background: var(--panel);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 28px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .skill-card:hover {
+      border-color: var(--border);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), var(--glow2);
+    }
+    .skill-card:hover::before { opacity: 1; }
+
+    .skill-card-icon {
+      width: 44px; height: 44px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+    .skill-card-icon.blue { background: rgba(0,212,255,0.12); }
+    .skill-card-icon.green { background: rgba(0,255,136,0.1); }
+    .skill-card-icon.orange { background: rgba(255,107,53,0.12); }
+
+    .skill-card-title {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 18px;
+      letter-spacing: 0.02em;
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.1em;
+    }
+    .skill-tag.cyan { background: rgba(0,212,255,0.08); color: var(--accent); border: 1px solid rgba(0,212,255,0.2); }
+    .skill-tag.green { background: rgba(0,255,136,0.06); color: var(--accent3); border: 1px solid rgba(0,255,136,0.2); }
+    .skill-tag.orange { background: rgba(255,107,53,0.08); color: var(--accent4); border: 1px solid rgba(255,107,53,0.2); }
+
+    /* EXPERIENCE */
+    #experience { background: var(--bg2); }
+
+    .exp-timeline { position: relative; padding-left: 40px; }
+    .exp-timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 10px; bottom: 0;
+      width: 1px;
+      background: linear-gradient(var(--accent), transparent);
+    }
+
+    .exp-item { position: relative; margin-bottom: 60px; }
+    .exp-item::before {
+      content: '';
+      position: absolute; left: -47px; top: 6px;
+      width: 14px; height: 14px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      background: var(--bg2);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .exp-meta {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .exp-company {
+      font-family: var(--sans);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .exp-badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.1em;
+    }
+    .exp-badge.current { background: rgba(0,255,136,0.1); color: var(--accent3); border: 1px solid rgba(0,255,136,0.3); }
+    .exp-badge.past { background: rgba(0,212,255,0.08); color: var(--accent); border: 1px solid rgba(0,212,255,0.2); }
+
+    .exp-role {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+    .exp-period {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+    }
+
+    .exp-achievements { list-style: none; }
+    .exp-achievements li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 12px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text2);
+    }
+    .exp-achievements li::before {
+      content: '▸';
+      position: absolute; left: 0;
+      color: var(--accent);
+      font-size: 11px;
+    }
+    .exp-achievements li strong { color: var(--text); }
+
+    /* PROJECTS */
+    #projects { }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    .project-card {
+      background: var(--panel);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      padding: 32px;
+      transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .project-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,212,255,0.05) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .project-card:hover { transform: translateY(-6px); border-color: var(--border); box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+    .project-card:hover::after { opacity: 1; }
+
+    .project-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .project-icon {
+      width: 50px; height: 50px;
+      border-radius: 10px;
+      background: rgba(0,212,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+    }
+    .project-links { display: flex; gap: 10px; }
+    .project-link {
+      width: 36px; height: 36px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      color: var(--text2);
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .project-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    .project-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .project-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text2);
+      margin-bottom: 20px;
+    }
+    .project-tech { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tech-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(0,212,255,0.06);
+      color: var(--accent);
+      border: 1px solid rgba(0,212,255,0.15);
+      letter-spacing: 0.1em;
+    }
+
+    /* CERT */
+    #certifications { background: var(--bg2); }
+
+    .cert-card {
+      display: flex; align-items: center; gap: 32px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 36px;
+      max-width: 700px;
+      position: relative; overflow: hidden;
+    }
+    .cert-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(var(--accent), var(--accent3));
+    }
+    .cert-icon {
+      width: 80px; height: 80px;
+      border-radius: 16px;
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px;
+      flex-shrink: 0;
+    }
+    .cert-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .cert-issuer {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+    .cert-desc {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    /* CONTACT */
+    #contact { }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-info-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .contact-info-sub {
+      font-size: 16px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 16px; }
+    .contact-link-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px;
+      background: var(--panel);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+      color: var(--text);
+    }
+    .contact-link-item:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+    .contact-link-icon {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      background: rgba(0,212,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .contact-link-text {
+      flex: 1;
+    }
+    .contact-link-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .contact-link-value { font-size: 14px; color: var(--text); }
+
+    /* Terminal Easter Egg */
+    .terminal-box {
+      background: rgba(5,10,18,0.95);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      font-family: var(--mono);
+    }
+    .terminal-header {
+      background: var(--panel);
+      padding: 12px 20px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border2);
+    }
+    .terminal-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .terminal-dot.red { background: #ff5f56; }
+    .terminal-dot.yellow { background: #ffbd2e; }
+    .terminal-dot.green { background: #27c93f; }
+    .terminal-title { font-size: 11px; color: var(--text3); margin-left: auto; letter-spacing: 0.1em; }
+    .terminal-body { padding: 24px; font-size: 13px; line-height: 1.9; }
+    .t-prompt { color: var(--accent3); }
+    .t-cmd { color: var(--text); }
+    .t-output { color: var(--text2); }
+    .t-key { color: var(--accent); }
+    .t-val { color: var(--accent4); }
+    .t-comment { color: var(--text3); }
+    .t-blink {
+      display: inline-block;
+      width: 8px; height: 14px;
+      background: var(--accent);
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border2);
+      padding: 40px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; z-index: 1;
+    }
+    .footer-left {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text3);
+    }
+    .footer-left span { color: var(--accent); }
+    .footer-right {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      section { padding: 80px 24px; }
+      #hero { padding: 0 24px; }
+      .hero-diagram { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .skills-layout { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 28px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+
+    /* Scanline overlay */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 3px,
+        rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="bg-grid"></div>
+<div class="particles" id="particles"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo"><span>// </span>SARNGAPANI.DEV</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <!-- Animated integration diagram background -->
+  <div class="hero-diagram">
+    <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#00d4ff"/>
+        </marker>
+      </defs>
+      <!-- Nodes -->
+      <rect x="40" y="80" width="120" height="50" rx="8" fill="none" stroke="#ff6b35" stroke-width="1.5"/>
+      <text x="100" y="110" text-anchor="middle" fill="#ff6b35" font-size="11" font-family="monospace">Banking Client</text>
+      <rect x="40" y="200" width="120" height="50" rx="8" fill="none" stroke="#ff6b35" stroke-width="1.5"/>
+      <text x="100" y="230" text-anchor="middle" fill="#ff6b35" font-size="11" font-family="monospace">Mobile App</text>
+      <rect x="40" y="320" width="120" height="50" rx="8" fill="none" stroke="#ff6b35" stroke-width="1.5"/>
+      <text x="100" y="350" text-anchor="middle" fill="#ff6b35" font-size="11" font-family="monospace">Third Party</text>
+      <!-- Experience Layer -->
+      <rect x="260" y="140" width="130" height="50" rx="8" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+      <text x="325" y="170" text-anchor="middle" fill="#00d4ff" font-size="11" font-family="monospace">Experience API</text>
+      <rect x="260" y="270" width="130" height="50" rx="8" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+      <text x="325" y="300" text-anchor="middle" fill="#00d4ff" font-size="11" font-family="monospace">Experience API</text>
+      <!-- Process Layer -->
+      <rect x="480" y="200" width="130" height="50" rx="8" fill="none" stroke="#64b4ff" stroke-width="1.5"/>
+      <text x="545" y="230" text-anchor="middle" fill="#64b4ff" font-size="11" font-family="monospace">Process API</text>
+      <!-- System Layer -->
+      <rect x="680" y="80" width="110" height="50" rx="8" fill="none" stroke="#00ff88" stroke-width="1.5"/>
+      <text x="735" y="110" text-anchor="middle" fill="#00ff88" font-size="11" font-family="monospace">Core Banking</text>
+      <rect x="680" y="200" width="110" height="50" rx="8" fill="none" stroke="#00ff88" stroke-width="1.5"/>
+      <text x="735" y="230" text-anchor="middle" fill="#00ff88" font-size="11" font-family="monospace">Database</text>
+      <rect x="680" y="320" width="110" height="50" rx="8" fill="none" stroke="#00ff88" stroke-width="1.5"/>
+      <text x="735" y="350" text-anchor="middle" fill="#00ff88" font-size="11" font-family="monospace">eKYC/PAN</text>
+      <!-- Connections -->
+      <line x1="160" y1="105" x2="260" y2="165" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+      <line x1="160" y1="225" x2="260" y2="200" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+      <line x1="160" y1="345" x2="260" y2="295" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+      <line x1="390" y1="165" x2="480" y2="215" stroke="#64b4ff" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+      <line x1="390" y1="295" x2="480" y2="240" stroke="#64b4ff" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+      <line x1="610" y1="210" x2="680" y2="105" stroke="#00ff88" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+      <line x1="610" y1="225" x2="680" y2="225" stroke="#00ff88" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+      <line x1="610" y1="240" x2="680" y2="345" stroke="#00ff88" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+      <!-- Layer labels -->
+      <text x="100" y="410" text-anchor="middle" fill="#4a6a8a" font-size="10" font-family="monospace">Consumer</text>
+      <text x="325" y="410" text-anchor="middle" fill="#4a6a8a" font-size="10" font-family="monospace">Experience</text>
+      <text x="545" y="410" text-anchor="middle" fill="#4a6a8a" font-size="10" font-family="monospace">Process</text>
+      <text x="735" y="410" text-anchor="middle" fill="#4a6a8a" font-size="10" font-family="monospace">System</text>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      AVAILABLE FOR OPPORTUNITIES
+    </div>
+    <h1 class="hero-name">
+      <span class="first">Sarngapani</span>
+      <span class="last">Bandaru</span>
+    </h1>
+    <p class="hero-title">MuleSoft Developer <span>·</span> Integration Engineer <span>·</span> API Integration Developer </p>
+    <p class="hero-desc">
+      Building the invisible backbone of enterprise systems — designing APIs that connect banks, 
+      modernize legacy infrastructure, and orchestrate data flow across distributed environments.
+    </p>
+    <div class="hero-btns">
+      <a href="#experience" class="btn btn-primary">View My Work ↓</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">8+</span>
+        <span class="stat-label">APIs Built</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">1</span>
+        <span class="stat-label">Certification</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">∞</span>
+        <span class="stat-label">Integrations</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About</div>
+  <h2 class="section-title">Bridging Systems,<br>One API at a Time</h2>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>
+        I'm a <strong>MuleSoft Developer</strong> at Coforge Limited, specializing in designing and deploying 
+        enterprise integration solutions for the <strong>banking domain</strong>. My work spans the full API lifecycle — 
+        from gathering requirements to production support.
+      </p>
+      <p>
+        I architect <strong>API-Led Connectivity</strong> patterns — Experience, Process, and System layers — that 
+        allow organizations to modernize without disrupting critical operations. I've migrated legacy Spring 
+        applications to Mule 4, containerized APIs with Docker, and deployed on Kubernetes from scratch.
+      </p>
+      <p>
+        I believe good integration engineering is like plumbing — when done right, nobody notices it. 
+        When done poorly, everything floods.
+      </p>
+      <a href="mailto:bandaru.sarngapani@gmail.com" class="btn btn-outline" style="margin-top:16px; display:inline-flex;">Contact Me →</a>
+    </div>
+    <div class="api-flow">
+      <div class="api-flow-title">API-LED CONNECTIVITY PATTERN</div>
+
+      <div class="flow-layer-label">// EXPERIENCE LAYER</div>
+      <div class="flow-node">
+        <div class="flow-box experience">Mobile/Web Client</div>
+        <div class="flow-arrow"><div class="flow-pulse"></div></div>
+        <div class="flow-box experience">Experience API</div>
+      </div>
+
+      <div class="flow-layer-label">// PROCESS LAYER</div>
+      <div class="flow-node">
+        <div class="flow-box process">Experience API</div>
+        <div class="flow-arrow"><div class="flow-pulse" style="animation-delay:0.5s"></div></div>
+        <div class="flow-box process">Process API</div>
+      </div>
+
+      <div class="flow-layer-label">// SYSTEM LAYER</div>
+      <div class="flow-node">
+        <div class="flow-box system">Process API</div>
+        <div class="flow-arrow"><div class="flow-pulse" style="animation-delay:1s"></div></div>
+        <div class="flow-box system">Core Banking</div>
+      </div>
+      <div style="margin-top:20px; padding:14px 16px; background:rgba(0,212,255,0.04); border:1px solid rgba(0,212,255,0.1); border-radius:6px;">
+        <div style="font-size:10px; color:var(--text3); letter-spacing:0.15em; margin-bottom:8px;">// RUNTIME</div>
+        <div style="color:var(--accent3); font-size:11px;">▸ Kubernetes + Docker</div>
+        <div style="color:var(--accent3); font-size:11px;">▸ NGINX Ingress + Load Balancer</div>
+        <div style="color:var(--accent3); font-size:11px;">▸ MuleSoft PCE Runtime Plane</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Skills</div>
+  <h2 class="section-title">Technical Stack</h2>
+  <div class="skills-layout">
+
+    <div class="skill-card reveal">
+      <div class="skill-card-icon blue">⚡</div>
+      <div class="skill-card-title">Integration & API</div>
+      <div class="skill-tags">
+        <span class="skill-tag cyan">MuleSoft Anypoint</span>
+        <span class="skill-tag cyan">Mule 4.x</span>
+        <span class="skill-tag cyan">DataWeave 2.0</span>
+        <span class="skill-tag cyan">API-Led Connectivity</span>
+        <span class="skill-tag cyan">RAML & API Design</span>
+        <span class="skill-tag cyan">Runtime Manager</span>
+        <span class="skill-tag cyan">API Manager</span>
+        <span class="skill-tag cyan">Anypoint Exchange</span>
+        <span class="skill-tag cyan">Global Error Handling</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="transition-delay:0.1s">
+      <div class="skill-card-icon green">🛠</div>
+      <div class="skill-card-title">Platform & Infrastructure</div>
+      <div class="skill-tags">
+        <span class="skill-tag green">Kubernetes</span>
+        <span class="skill-tag green">Docker</span>
+        <span class="skill-tag green">PCE Runtime Plane</span>
+        <span class="skill-tag green">CloudHub</span>
+        <span class="skill-tag green">NGINX Ingress</span>
+        <span class="skill-tag green">Apache HTTPD</span>
+        <span class="skill-tag green">Linux Admin</span>
+        <span class="skill-tag green">On-Premise Runtime</span>
+        <span class="skill-tag green">Load Balancer</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="transition-delay:0.2s">
+      <div class="skill-card-icon orange">🔧</div>
+      <div class="skill-card-title">Tools & Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag orange">Anypoint Studio 7.x</span>
+        <span class="skill-tag orange">Jenkins</span>
+        <span class="skill-tag orange">Postman</span>
+        <span class="skill-tag orange">Git</span>
+        <span class="skill-tag orange">Java</span>
+        <span class="skill-tag orange">Python</span>
+        <span class="skill-tag orange">SQL</span>
+        <span class="skill-tag orange">Shell Scripting</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Experience</div>
+  <h2 class="section-title">Work History</h2>
+  <div class="exp-timeline">
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-company">Coforge Limited</span>
+        <span class="exp-badge current">● CURRENT</span>
+      </div>
+      <div class="exp-role">GRADUATE ENGINEER TRAINEE — SALESFORCE GROUP</div>
+      <div class="exp-period">SEPT 2025 — PRESENT · Hyderabad, India</div>
+      <ul class="exp-achievements">
+        <li>Designed and developed <strong>core banking APIs</strong> (financial & non-financial) supporting fund management, account statements, balance inquiry, eKYC update, PAN/Aadhaar validation, loan services, and government-linked banking schemes.</li>
+        <li>Modernized <strong>legacy Spring applications</strong> by migrating them to Mule 4 APIs; collaborated with stakeholders on functional and technical requirements for new API integrations.</li>
+        <li>Assisted in setting up the complete <strong>Anypoint PCE environment</strong> — installing and configuring both the Runtime Plane and Control Plane on Kubernetes from scratch.</li>
+        <li>Built standardized <strong>Docker images</strong> for all APIs across DEV, QA, UAT, and PROD environments, ensuring consistent containerized deployments.</li>
+        <li>Configured Kubernetes infrastructure including <strong>Deployments, Services, DaemonSets, PVs, PVCs, ConfigMaps, Secrets</strong>, and node affinity rules for optimal pod placement.</li>
+        <li>Designed high-availability API routing using <strong>NGINX, Kubernetes Ingress, and Apache HTTPD</strong> for intelligent load balancing.</li>
+        <li>Implemented <strong>Linux shell automation</strong> for Docker image generation, Kubernetes rollouts, and continuous production monitoring.</li>
+        <li>Provided <strong>production support</strong> including monitoring, incident troubleshooting, root-cause analysis, and timely resolution.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal" style="transition-delay:0.1s">
+      <div class="exp-meta">
+        <span class="exp-company">Coforge Limited</span>
+        <span class="exp-badge past">INTERN</span>
+      </div>
+      <div class="exp-role">INTERN — MULESOFT / INTEGRATION</div>
+      <div class="exp-period">FEB 2025 — SEPT 2025 · Hyderabad, India</div>
+      <ul class="exp-achievements">
+        <li>Worked hands-on with <strong>Mule 4 connectors</strong> — Database Connector, Salesforce Connector, Batch components, and custom connectors for enterprise integration.</li>
+        <li>Built, tested, and <strong>deployed Mule applications on CloudHub</strong>.</li>
+        <li>Achieved the <strong>Salesforce MuleSoft Developer Certification</strong> while gaining full lifecycle experience from development to deployment.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Projects</div>
+  <h2 class="section-title">Selected Work</h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal" id="card1">
+      <div class="project-header">
+        <div class="project-icon">🏦</div>
+        <div class="project-links">
+          <a href="https://github.com/Sarngapani" target="_blank" class="project-link">↗</a>
+        </div>
+      </div>
+      <div class="project-title">Core Banking API Platform</div>
+      <div class="project-desc">
+        End-to-end API platform for a banking client covering fund management, account statements, 
+        balance inquiry, eKYC/PAN validation, loan services, and government-linked schemes — built on Mule 4 with API-Led Connectivity.
+      </div>
+      <div class="project-tech">
+        <span class="tech-tag">Mule 4</span>
+        <span class="tech-tag">DataWeave 2.0</span>
+        <span class="tech-tag">RAML</span>
+        <span class="tech-tag">Kubernetes</span>
+        <span class="tech-tag">Docker</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.1s" id="card2">
+      <div class="project-header">
+        <div class="project-icon">☸️</div>
+        <div class="project-links">
+          <a href="https://github.com/Sarngapani" target="_blank" class="project-link">↗</a>
+        </div>
+      </div>
+      <div class="project-title">Anypoint PCE Setup on Kubernetes</div>
+      <div class="project-desc">
+        Configured MuleSoft Private Cloud Edition from scratch — Runtime Plane + Control Plane on Kubernetes 
+        with NGINX Ingress, PVs, PVCs, DaemonSets, ConfigMaps, and node affinity for high availability.
+      </div>
+      <div class="project-tech">
+        <span class="tech-tag">MuleSoft PCE</span>
+        <span class="tech-tag">Kubernetes</span>
+        <span class="tech-tag">NGINX</span>
+        <span class="tech-tag">Linux</span>
+        <span class="tech-tag">Shell</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.15s" id="card3">
+      <div class="project-header">
+        <div class="project-icon">🧠</div>
+        <div class="project-links">
+          <a href="https://github.com/Sarngapani/SmartParkingUsingDeepLearning" target="_blank" class="project-link">↗</a>
+        </div>
+      </div>
+      <div class="project-title">Smart Parking Using Deep Learning</div>
+      <div class="project-desc">
+        Computer vision–based parking system using deep learning to detect and classify available parking 
+        spots in real-time from camera feeds. Built with Python and neural network models.
+      </div>
+      <div class="project-tech">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">Deep Learning</span>
+        <span class="tech-tag">Computer Vision</span>
+        <span class="tech-tag">OpenCV</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.2s" id="card4">
+      <div class="project-header">
+        <div class="project-icon">❤️</div>
+        <div class="project-links">
+          <a href="https://github.com/Sarngapani/heartdiseaseprediction" target="_blank" class="project-link">↗</a>
+        </div>
+      </div>
+      <div class="project-title">Heart Disease Prediction</div>
+      <div class="project-desc">
+        Machine learning model that predicts the risk of heart disease from clinical parameters. 
+        Implemented with multiple classifiers, data preprocessing, and visual analysis in Jupyter Notebook.
+      </div>
+      <div class="project-tech">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">Scikit-learn</span>
+        <span class="tech-tag">Jupyter</span>
+        <span class="tech-tag">ML</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label">Certifications</div>
+  <h2 class="section-title">Credentials</h2>
+  <div class="cert-card reveal">
+    <div class="cert-icon">🏆</div>
+    <div>
+      <div class="cert-name">Salesforce Certified MuleSoft Developer</div>
+      <div class="cert-issuer">SALESFORCE / MULESOFT · 2025</div>
+      <div class="cert-desc">
+        Validates expertise in designing, building, testing, and deploying Mule applications 
+        using Anypoint Platform — covering DataWeave, API-Led Connectivity, and runtime deployment.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <h2 class="section-title">Let's Connect</h2>
+  <div class="contact-grid">
+    <div>
+      <div class="contact-info-title">Open to new opportunities</div>
+      <div class="contact-info-sub">
+        Whether you're looking for a MuleSoft developer, integration engineer, or just want to 
+        talk APIs and architecture — I'm always happy to connect.
+      </div>
+      <div class="contact-links">
+        <a href="mailto:bandaru.sarngapani@gmail.com" class="contact-link-item">
+          <div class="contact-link-icon">✉</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">Email</div>
+            <div class="contact-link-value">bandaru.sarngapani@gmail.com</div>
+          </div>
+          <span style="color:var(--text3)">→</span>
+        </a>
+        <a href="https://linkedin.com/in/sarnga-pani-bandaru" target="_blank" class="contact-link-item">
+          <div class="contact-link-icon">in</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">LinkedIn</div>
+            <div class="contact-link-value">sarnga-pani-bandaru</div>
+          </div>
+          <span style="color:var(--text3)">→</span>
+        </a>
+        <a href="https://github.com/Sarngapani" target="_blank" class="contact-link-item">
+          <div class="contact-link-icon">⌥</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">GitHub</div>
+            <div class="contact-link-value">github.com/Sarngapani</div>
+          </div>
+          <span style="color:var(--text3)">→</span>
+        </a>
+        <a href="tel:+918317585216" class="contact-link-item">
+          <div class="contact-link-icon">📞</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">Phone</div>
+            <div class="contact-link-value">+91 83175 85216</div>
+          </div>
+          <span style="color:var(--text3)">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="terminal-box reveal">
+      <div class="terminal-header">
+        <div class="terminal-dot red"></div>
+        <div class="terminal-dot yellow"></div>
+        <div class="terminal-dot green"></div>
+        <div class="terminal-title">sarngapani@mulesoft ~ bash</div>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-prompt">sarngapani@mulesoft</span><span class="t-comment">:~$</span> <span class="t-cmd">cat profile.json</span></div>
+        <div style="margin-top:8px"><span class="t-output">{</span></div>
+        <div style="padding-left:20px"><span class="t-key">"name"</span><span class="t-output">: </span><span class="t-val">"Sarngapani Bandaru"</span><span class="t-output">,</span></div>
+        <div style="padding-left:20px"><span class="t-key">"role"</span><span class="t-output">: </span><span class="t-val">"MuleSoft Developer"</span><span class="t-output">,</span></div>
+        <div style="padding-left:20px"><span class="t-key">"location"</span><span class="t-output">: </span><span class="t-val">"Hyderabad, India"</span><span class="t-output">,</span></div>
+        <div style="padding-left:20px"><span class="t-key">"certifications"</span><span class="t-output">: [</span><span class="t-val">"MuleSoft Dev"</span><span class="t-output">],</span></div>
+        <div style="padding-left:20px"><span class="t-key">"available"</span><span class="t-output">: </span><span class="t-val" style="color:var(--accent3)">true</span></div>
+        <div><span class="t-output">}</span></div>
+        <div style="margin-top:16px"><span class="t-prompt">sarngapani@mulesoft</span><span class="t-comment">:~$</span> <span class="t-cmd">mule deploy integration.xml</span></div>
+        <div style="margin-top:4px"><span class="t-comment">▸ Deploying to CloudHub...</span></div>
+        <div><span class="t-comment">▸ API Manager: registered</span></div>
+        <div><span class="t-comment">▸ Runtime: </span><span class="t-val" style="color:var(--accent3)">STARTED ✓</span></div>
+        <div style="margin-top:16px"><span class="t-prompt">sarngapani@mulesoft</span><span class="t-comment">:~$</span> <span class="t-blink"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <span>© 2025</span> Sarngapani Bandaru — Built with ❤️ and DataWeave
+  </div>
+  <div class="footer-right">MuleSoft Developer · Hyderabad, India</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+  document.querySelectorAll('a,button').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; ring.style.width = '50px'; ring.style.height = '50px'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.width = '36px'; ring.style.height = '36px'; });
+  });
+
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Particles
+  const particlesEl = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.setProperty('--dx', (Math.random() * 80 - 40) + 'px');
+    if (i % 5 === 0) { p.style.background = 'var(--accent3)'; p.style.width = '3px'; p.style.height = '3px'; }
+    particlesEl.appendChild(p);
+  }
+
+  // Card glow follow
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+</script>
+</body>
+</html>
