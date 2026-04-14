@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -622,13 +621,22 @@
       background: linear-gradient(var(--accent), var(--accent3));
     }
     .cert-icon {
-      width: 80px; height: 80px;
-      border-radius: 16px;
-      background: rgba(0,212,255,0.1);
-      border: 1px solid rgba(0,212,255,0.3);
+      width: 100px; height: 100px;
+      border-radius: 0;
+      background: transparent;
+      border: none;
       display: flex; align-items: center; justify-content: center;
-      font-size: 40px;
       flex-shrink: 0;
+    }
+    .cert-icon img {
+      width: 100px; height: 100px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(0,212,255,0.25));
+      transition: filter 0.3s, transform 0.3s;
+    }
+    .cert-card:hover .cert-icon img {
+      filter: drop-shadow(0 0 20px rgba(0,212,255,0.5));
+      transform: scale(1.05);
     }
     .cert-name {
       font-size: 20px;
@@ -694,9 +702,7 @@
       font-size: 18px;
       flex-shrink: 0;
     }
-    .contact-link-text {
-      flex: 1;
-    }
+    .contact-link-text { flex: 1; }
     .contact-link-label {
       font-family: var(--mono);
       font-size: 10px;
@@ -706,6 +712,77 @@
       margin-bottom: 3px;
     }
     .contact-link-value { font-size: 14px; color: var(--text); }
+
+    /* CONTACT FORM */
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 13px 16px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: none;
+      width: 100%;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--text3); }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,212,255,0.08);
+    }
+    .form-group textarea { min-height: 120px; }
+    .form-submit {
+      display: flex; align-items: center; gap: 12px;
+      margin-top: 4px;
+    }
+    .btn-send {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 6px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-send:hover:not(:disabled) {
+      background: #fff;
+      box-shadow: 0 0 30px rgba(0,212,255,0.5);
+      transform: translateY(-2px);
+    }
+    .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
+    .form-status {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      display: none;
+      letter-spacing: 0.05em;
+    }
+    .form-status.success { background: rgba(0,255,136,0.1); color: var(--accent3); border: 1px solid rgba(0,255,136,0.3); display: block; }
+    .form-status.error { background: rgba(255,80,80,0.1); color: #ff6b6b; border: 1px solid rgba(255,80,80,0.3); display: block; }
 
     /* Terminal Easter Egg */
     .terminal-box {
@@ -876,7 +953,7 @@
       <span class="first">Sarngapani</span>
       <span class="last">Bandaru</span>
     </h1>
-    <p class="hero-title">MuleSoft Developer <span>·</span> Integration Engineer <span>·</span> API Integration Developer </p>
+    <p class="hero-title">MuleSoft Developer <span>·</span> Integration Engineer <span>·</span> API Architect</p>
     <p class="hero-desc">
       Building the invisible backbone of enterprise systems — designing APIs that connect banks, 
       modernize legacy infrastructure, and orchestrate data flow across distributed environments.
@@ -922,7 +999,7 @@
         I believe good integration engineering is like plumbing — when done right, nobody notices it. 
         When done poorly, everything floods.
       </p>
-      <a href="mailto:bandaru.sarngapani@gmail.com" class="btn btn-outline" style="margin-top:16px; display:inline-flex;">Contact Me →</a>
+      <a href="/cdn-cgi/l/email-protection#593b38373d382b2c772a382b373e3829383730193e34383035773a3634" class="btn btn-outline" style="margin-top:16px; display:inline-flex;">Contact Me →</a>
     </div>
     <div class="api-flow">
       <div class="api-flow-title">API-LED CONNECTIVITY PATTERN</div>
@@ -1151,7 +1228,7 @@
   <div class="section-label">Certifications</div>
   <h2 class="section-title">Credentials</h2>
   <div class="cert-card reveal">
-    <div class="cert-icon">🏆</div>
+    <div class="cert-icon"><img src="https://developer.salesforce.com/resources2/certification-site/images/2024/2024-02_SF-Cert-Badge_MuleSoft-Developer-I.svg" alt="Salesforce Certified MuleSoft Developer I Badge" /></div>
     <div>
       <div class="cert-name">Salesforce Certified MuleSoft Developer</div>
       <div class="cert-issuer">SALESFORCE / MULESOFT · 2025</div>
@@ -1169,20 +1246,45 @@
   <h2 class="section-title">Let's Connect</h2>
   <div class="contact-grid">
     <div>
-      <div class="contact-info-title">Open to new opportunities</div>
+      <div class="contact-info-title">Send me a message</div>
       <div class="contact-info-sub">
         Whether you're looking for a MuleSoft developer, integration engineer, or just want to 
-        talk APIs and architecture — I'm always happy to connect.
+        talk APIs and architecture — drop a message and I'll get back to you.
       </div>
-      <div class="contact-links">
-        <a href="mailto:bandaru.sarngapani@gmail.com" class="contact-link-item">
-          <div class="contact-link-icon">✉</div>
-          <div class="contact-link-text">
-            <div class="contact-link-label">Email</div>
-            <div class="contact-link-value">bandaru.sarngapani@gmail.com</div>
+
+      <!-- Contact Form — powered by Formspree -->
+      <!-- 🔧 SETUP: Replace "YOUR_FORM_ID" below with your Formspree form ID.
+           Go to https://formspree.io → New Form → copy the ID (e.g. xpwzgkab) -->
+      <div class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cf-name">Your Name</label>
+            <input type="text" id="cf-name" placeholder="Jane Smith" required />
           </div>
-          <span style="color:var(--text3)">→</span>
-        </a>
+          <div class="form-group">
+            <label for="cf-email">Your Email</label>
+            <input type="email" id="cf-email" placeholder="jane@company.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cf-subject">Subject</label>
+          <input type="text" id="cf-subject" placeholder="Opportunity / Collaboration / Just saying hi" />
+        </div>
+        <div class="form-group">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" placeholder="Tell me what you have in mind..." required></textarea>
+        </div>
+        <div class="form-submit">
+          <button class="btn-send" id="sendBtn" type="button" onclick="submitForm()">
+            <span id="btnText">Send Message</span>
+            <span id="btnIcon">→</span>
+          </button>
+        </div>
+        <div class="form-status" id="formStatus"></div>
+      </div>
+
+      <!-- Social links kept below form -->
+      <div class="contact-links" style="margin-top:28px;">
         <a href="https://linkedin.com/in/sarnga-pani-bandaru" target="_blank" class="contact-link-item">
           <div class="contact-link-icon">in</div>
           <div class="contact-link-text">
@@ -1196,14 +1298,6 @@
           <div class="contact-link-text">
             <div class="contact-link-label">GitHub</div>
             <div class="contact-link-value">github.com/Sarngapani</div>
-          </div>
-          <span style="color:var(--text3)">→</span>
-        </a>
-        <a href="tel:+918317585216" class="contact-link-item">
-          <div class="contact-link-icon">📞</div>
-          <div class="contact-link-text">
-            <div class="contact-link-label">Phone</div>
-            <div class="contact-link-value">+91 83175 85216</div>
           </div>
           <span style="color:var(--text3)">→</span>
         </a>
@@ -1243,7 +1337,7 @@
   <div class="footer-right">MuleSoft Developer · Hyderabad, India</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Custom cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
@@ -1294,6 +1388,57 @@
       card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
     });
   });
+
+  // Contact form — Formspree
+  // 🔧 Replace YOUR_FORM_ID with your actual Formspree form ID
+  const FORMSPREE_ID = 'mzdybwrr';
+
+  async function submitForm() {
+    const name    = document.getElementById('cf-name').value.trim();
+    const email   = document.getElementById('cf-email').value.trim();
+    const subject = document.getElementById('cf-subject').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+    const btn     = document.getElementById('sendBtn');
+    const status  = document.getElementById('formStatus');
+
+    if (!name || !email || !message) {
+      status.textContent = '▸ Please fill in your name, email, and message.';
+      status.className = 'form-status error';
+      return;
+    }
+
+    btn.disabled = true;
+    document.getElementById('btnText').textContent = 'Sending...';
+    document.getElementById('btnIcon').textContent = '⏳';
+    status.className = 'form-status';
+
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ name, email, subject, message })
+      });
+
+      if (res.ok) {
+        status.textContent = "▸ Message sent! I'll get back to you soon.";
+        status.className = 'form-status success';
+        document.getElementById('cf-name').value = '';
+        document.getElementById('cf-email').value = '';
+        document.getElementById('cf-subject').value = '';
+        document.getElementById('cf-message').value = '';
+        document.getElementById('btnText').textContent = 'Sent ✓';
+        document.getElementById('btnIcon').textContent = '';
+      } else {
+        throw new Error('Server error');
+      }
+    } catch (err) {
+      status.textContent = '▸ Something went wrong. Please try again or reach out on LinkedIn.';
+      status.className = 'form-status error';
+      document.getElementById('btnText').textContent = 'Send Message';
+      document.getElementById('btnIcon').textContent = '→';
+      btn.disabled = false;
+    }
+  }
 </script>
 </body>
 </html>
