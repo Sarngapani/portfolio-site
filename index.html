@@ -874,6 +874,20 @@
       );
       pointer-events: none;
     }
+    #home-icon {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    #home-name{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text2);
+      text-decoration: none;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
   </style>
 </head>
 <body>
@@ -885,7 +899,7 @@
 
 <!-- NAV -->
 <nav id="nav">
-  <div class="nav-logo"><span>// </span>SARNGAPANI.DEV</div>
+  <div class="nav-logo"><span id="home-icon">&lt;/&gt; </span><a id="home-name" href="/">SARNGAPANI.DEV</a></div>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -953,7 +967,7 @@
       <span class="first">Sarngapani</span>
       <span class="last">Bandaru</span>
     </h1>
-    <p class="hero-title">MuleSoft Developer <span>·</span> Integration Engineer <span>·</span> API Architect</p>
+    <p class="hero-title">MuleSoft Developer <span>·</span> Integration Engineer <span>·</span> API Developer</p>
     <p class="hero-desc">
       Building the invisible backbone of enterprise systems — designing APIs that connect banks, 
       modernize legacy infrastructure, and orchestrate data flow across distributed environments.
@@ -991,7 +1005,7 @@
         from gathering requirements to production support.
       </p>
       <p>
-        I architect <strong>API-Led Connectivity</strong> patterns — Experience, Process, and System layers — that 
+        I work with <strong>API-Led Connectivity</strong> patterns — Experience, Process, and System layers — that 
         allow organizations to modernize without disrupting critical operations. I've migrated legacy Spring 
         applications to Mule 4, containerized APIs with Docker, and deployed on Kubernetes from scratch.
       </p>
@@ -999,7 +1013,7 @@
         I believe good integration engineering is like plumbing — when done right, nobody notices it. 
         When done poorly, everything floods.
       </p>
-      <a href="/cdn-cgi/l/email-protection#593b38373d382b2c772a382b373e3829383730193e34383035773a3634" class="btn btn-outline" style="margin-top:16px; display:inline-flex;">Contact Me →</a>
+      <a href="mailto:bandaru.sarngapani@gmail.com" class="btn btn-outline" style="margin-top:16px; display:inline-flex;">Contact Me →</a>
     </div>
     <div class="api-flow">
       <div class="api-flow-title">API-LED CONNECTIVITY PATTERN</div>
@@ -1022,7 +1036,7 @@
       <div class="flow-node">
         <div class="flow-box system">Process API</div>
         <div class="flow-arrow"><div class="flow-pulse" style="animation-delay:1s"></div></div>
-        <div class="flow-box system">Core Banking</div>
+        <div class="flow-box system">System API</div>
       </div>
       <div style="margin-top:20px; padding:14px 16px; background:rgba(0,212,255,0.04); border:1px solid rgba(0,212,255,0.1); border-radius:6px;">
         <div style="font-size:10px; color:var(--text3); letter-spacing:0.15em; margin-bottom:8px;">// RUNTIME</div>
